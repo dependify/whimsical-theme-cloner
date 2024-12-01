@@ -23,14 +23,24 @@ export const Hero = () => {
       
       {/* Image Carousel */}
       <div className="absolute inset-0">
-        <Carousel className="w-full h-full" opts={{ loop: true, duration: 50 }}>
-          <CarouselContent>
+        <Carousel 
+          className="w-full h-full" 
+          opts={{ 
+            loop: true,
+            align: "start",
+            duration: 40,
+            dragFree: true,
+            skipSnaps: true,
+            inViewThreshold: 0.7,
+          }}
+        >
+          <CarouselContent className="transition-transform duration-1000">
             {images.map((image, index) => (
-              <CarouselItem key={index} className="w-full h-[600px]">
+              <CarouselItem key={index} className="w-full h-[600px] transition-opacity duration-500">
                 <img
                   src={image}
                   alt={`Slide ${index + 1}`}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transition-transform duration-500 transform"
                 />
               </CarouselItem>
             ))}
