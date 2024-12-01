@@ -6,6 +6,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "./ui/carousel";
+import { useEffect, useState } from "react";
 
 const images = [
   "/lovable-uploads/9ecda841-365d-4f92-af83-d36dc80bc9c8.png",
@@ -16,6 +17,23 @@ const images = [
 ];
 
 export const Hero = () => {
+  const [api, setApi] = useState<any>(null);
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    // Start autoplay
+    const autoplayInterval = setInterval(() => {
+      api.scrollNext();
+    }, 5000);
+
+    return () => {
+      clearInterval(autoplayInterval);
+    };
+  }, [api]);
+
   return (
     <div className="relative min-h-[600px] overflow-hidden">
       {/* Background Video */}
@@ -25,17 +43,16 @@ export const Hero = () => {
       <div className="absolute inset-0">
         <Carousel 
           className="w-full h-full" 
+          setApi={setApi}
           opts={{ 
             loop: true,
-            align: "center",
-            duration: 20,
-            dragFree: false,
-            containScroll: "trimSnaps",
+            align: "start",
+            skipSnaps: false,
           }}
         >
-          <CarouselContent className="-ml-1">
+          <CarouselContent>
             {images.map((image, index) => (
-              <CarouselItem key={index} className="w-full h-[600px] pl-1">
+              <CarouselItem key={index} className="w-full h-[600px]">
                 <div className="h-full w-full">
                   <img
                     src={image}
@@ -46,8 +63,8 @@ export const Hero = () => {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="z-20 left-4" />
-          <CarouselNext className="z-20 right-4" />
+          <CarouselPrevious className="absolute left-4 z-20" />
+          <CarouselNext className="absolute right-4 z-20" />
         </Carousel>
       </div>
 
